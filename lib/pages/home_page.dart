@@ -59,9 +59,14 @@ class _HomePageState extends State<HomePage> {
     if (clothes.isEmpty) {
       return const Center(child: Text("No clothes found."));
     }
-    return ListView.separated(
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 0.85,
+      ),
       itemCount: clothes.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 14),
       itemBuilder: (context, index) {
         final clothing = clothes[index];
         return Card(
@@ -79,27 +84,30 @@ class _HomePageState extends State<HomePage> {
               );
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        clothing.name!,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Text(
+                          clothing.name!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Row(
                         children: [
-                          Icon(Icons.star, color: Colors.amber, size: 20),
-                          const SizedBox(width: 4),
+                          Icon(Icons.star, color: Colors.amber, size: 18),
+                          const SizedBox(width: 2),
                           Text(
                             "${clothing.rating!}",
-                            style: const TextStyle(fontSize: 16),
+                            style: const TextStyle(fontSize: 14),
                           ),
                         ],
                       ),
@@ -110,8 +118,9 @@ class _HomePageState extends State<HomePage> {
                       style: const TextStyle(fontWeight: FontWeight.w500)),
                   Text(clothing.category!,
                       style: const TextStyle(color: Colors.grey)),
-                  const SizedBox(height: 8),
+                  const Spacer(),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
                         onPressed: () {
@@ -122,14 +131,16 @@ class _HomePageState extends State<HomePage> {
                             ),
                           );
                         },
-                        icon: const Icon(Icons.edit, color: Colors.deepPurple),
+                        icon: const Icon(Icons.edit,
+                            color: Colors.deepPurple, size: 20),
                         tooltip: 'Edit',
                       ),
                       IconButton(
                         onPressed: () {
                           _delete(clothing.id!);
                         },
-                        icon: const Icon(Icons.delete, color: Colors.red),
+                        icon: const Icon(Icons.delete,
+                            color: Colors.red, size: 20),
                         tooltip: 'Delete',
                       ),
                     ],
